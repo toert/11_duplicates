@@ -24,7 +24,7 @@ if __name__ == '__main__':
     filepath_folder = input('Enter filepath to dir: ')
     data_about_files = get_all_files(filepath_folder)
     list_of_files_to_remove = []
-    for i in range(len(data_about_files) - 1): #finding_couples_of_same_files
+    for current_file in data_about_files[:-1]: #finding_couples_of_same_files
         j = i + 1
         while (j < len(data_about_files)):
             if are_files_duplicates(data_about_files[i][0], \
