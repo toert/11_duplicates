@@ -36,7 +36,6 @@ def pretty_print_list(paths):
 
 def get_list_of_count_filenames_repeats(filepath_folder):
     filepaths_of_all_files = get_all_files(filepath_folder)
-    list_of_files_to_remove = []
     all_names = []
     for path in filepaths_of_all_files:
         all_names.append(os.path.basename(path))
