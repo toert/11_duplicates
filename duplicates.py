@@ -10,7 +10,7 @@ def are_files_duplicates(file_path1, file_path2):
                 ((name1[:-4] == name2) or (name1 == name2[:-4]) or (name1 == name2)))
 
 
-def are_files_copies(file_path1, file_path2):
+def are_files_similar(file_path1, file_path2):
     name1 = os.path.splitext(os.path.basename(file_path1))[0]
     name2 = os.path.splitext(os.path.basename(file_path2))[0]
     return bool(os.path.getsize(file_path1) == os.path.getsize(file_path2) and \
@@ -33,10 +33,10 @@ def get_dict_with_sizes(filepath):
     return dict
 
 
-def get_dict_of_copies(paths, mode=1):
+def get_dict_of_copies(paths, mode='all'):
     """
-    mode = 1  => get all copies
-    mode = 2 => get copies like 17.txt, 17 (1).txt, 17 (2).txt, etc
+    mode = 'all'  => get all copies
+    mode = 'safety' => get copies like 17.txt, 17 (1).txt, 17 (2).txt, etc
     """
     struct_files = defaultdict(list)
     only_repeating = defaultdict(list)
@@ -50,12 +50,12 @@ def get_dict_of_copies(paths, mode=1):
             does_it_have_a_couple = False
             for other_path_number, other_path in enumerate\
 (list(filter(lambda filepath: sizes[filepath] == sizes[path] , paths[path_number + 1:]))):
-                if mode == 1:
+                if mode == 'all':
                     if are_files_duplicates(path, other_path):
                         does_it_have_a_couple = True
                         struct_files[number_repeat].append(other_path)
                         were_saved.append(other_path)
-                if mode == 2:
+                if mode == 'safety':
                     if are_files_copies(path, other_path):
                         does_it_have_a_couple = True
                         struct_files[number_repeat].append(other_path)
