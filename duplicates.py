@@ -83,8 +83,8 @@ def get_sum_size(dict):
     sum = 0
     for key in dict:
         sum = sum + (os.path.getsize(dict[key][0])*len(dict[key]))
-    inMb = float(sum / (1024*1024))
-    return int(inMb)
+    in_mb = float(sum / (1024*1024))
+    return int(in_mb)
 
 
 if __name__ == '__main__':
