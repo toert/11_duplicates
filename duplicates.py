@@ -37,53 +37,37 @@ def get_dict_with_sizes(filepath):
 
 
 def get_dict_of_copies(paths): #get copies like 17.txt, 17 (1).txt, 17 (2).txt, etc
-    struct_files = defaultdict(list)
-    only_repeating = defaultdict(list)
-    sizes = get_dict_with_sizes(paths)
+    repeating_files = defaultdict(list)
     were_saved = []
-    number_repeat = -1
-    for path_number, path in enumerate(paths[:-1]): #because the last will be compared with all other files
+    for path_number, path in enumerate(paths[:-1]):  # because the last will be compared with all other files
         if path not in were_saved:
-            number_repeat = number_repeat + 1
-            struct_files[number_repeat].append(path)
             does_it_have_a_couple = False
-            for other_path_number, other_path in enumerate\
-(list(filter(lambda filepath: sizes[filepath] == sizes[path] , paths[path_number + 1:]))):
+            for other_path in paths[path_number + 1:]:
                 if are_files_copies(path, other_path):
                     does_it_have_a_couple = True
-                    struct_files[number_repeat].append(other_path)
+                    repeating_files[path_number].append(other_path)
                     were_saved.append(other_path)
             if does_it_have_a_couple:
                 were_saved.append(path)
-    for key in struct_files:
-        if len(struct_files[key]) > 1:
-            only_repeating[key] = struct_files[key]
-    return only_repeating
+                repeating_files[path_number].append(path)
+    return repeating_files
 
 
 def get_dict_of_duplicates(paths):
-    struct_files = defaultdict(list)
-    only_repeating = defaultdict(list)
-    sizes = get_dict_with_sizes(paths)
+    repeating_files = defaultdict(list)
     were_saved = []
-    number_repeat = -1
     for path_number, path in enumerate(paths[:-1]): #because the last will be compared with all other files
         if path not in were_saved:
-            number_repeat = number_repeat + 1
-            struct_files[number_repeat].append(path)
             does_it_have_a_couple = False
-            for other_path_number, other_path in enumerate\
-(list(filter(lambda filepath: sizes[filepath] == sizes[path] , paths[path_number + 1:]))):
+            for other_path in paths[path_number + 1:]:
                 if are_files_duplicates(path, other_path):
                     does_it_have_a_couple = True
-                    struct_files[number_repeat].append(other_path)
+                    repeating_files[path_number].append(other_path)
                     were_saved.append(other_path)
             if does_it_have_a_couple:
                 were_saved.append(path)
-    for key in struct_files:
-        if len(struct_files[key]) > 1:
-            only_repeating[key] = struct_files[key]
-    return only_repeating
+                repeating_files[path_number].append(path)
+    return repeating_files
 
 
 def get_list_repeating_files(filepath_folder):
@@ -100,7 +84,11 @@ def get_list_repeating_files(filepath_folder):
 if __name__ == '__main__':
     filepath_folder = input('Enter filepath to dir: ')
     filepaths = get_all_files(filepath_folder)
-    repeating_files = get_dict_of_duplicates(filepaths)
+    choise = int(input('Do you wanna find: \n 1. copies \n 2. duplicates? \n'))
+    if choise == 1:
+        repeating_files = get_dict_of_copies(filepaths)
+    else:
+        repeating_files = get_dict_of_duplicates(filepaths)
     for key in repeating_files:
         print('File {} is saved in: '.format(basename(repeating_files[key][0])))
         for path in repeating_files[key]:
